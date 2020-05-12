@@ -62,7 +62,7 @@ typedef NTSTATUS(NTAPI * pfnRtlCreateUserThread)(
 
 BOOL EnableDebugPrivilege(BOOL fEnable)
 {
-	BOOL fOk = FALSE;
+	BOOL f = FALSE;
 	HANDLE hToken;
 	if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken))
 	{
@@ -74,7 +74,7 @@ BOOL EnableDebugPrivilege(BOOL fEnable)
 		fOk = (GetLastError() == ERROR_SUCCESS);
 		CloseHandle(hToken);
 	}
-	return(fOk);
+	return(f);
 }
 int wmain(int argc, wchar_t **argv)
 {
@@ -94,10 +94,10 @@ int wmain(int argc, wchar_t **argv)
 		ExitProcess(-1);
 	}
 	DWORD pid = _wtoi(argv[1]);
-	printf("PID is: %d,0x%x\n", (UINT)pid, (UINT)pid);
+	
 	HANDLE hprocess = OpenProcess(PROCESS_ALL_ACCESS,FALSE,pid);
 	
-	printf("Process handle: 0x%x\n", (UINT)hprocess);
+	
 	
 	LPVOID lpbaseaddress = (LPVOID)VirtualAllocEx(hprocess, NULL, 0x1000, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 	
